@@ -6,6 +6,6 @@ python-jose
 pydantic
 sqlmodel
 slowapi
-google-generative-ai
+google-generativeai
 pytest
 requests
