@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+python-dotenv
+passlib[bcrypt]
+python-jose
+pydantic
+sqlmodel
+slowapi
+google-generative-ai
+pytest
+requests
