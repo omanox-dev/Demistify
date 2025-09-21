@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { 
   Box, Typography, TextField, Button, Alert, CircularProgress, 
   IconButton, Paper, AppBar, Toolbar, Tabs, Tab, Card, CardContent,
-  Chip, Avatar, Grid
+  Chip, Avatar
 } from '@mui/material';
 import {
   ArrowBack as ArrowBackIcon,
-  DocumentScanner as DocumentIcon,
-  Summarize as SummarizeIcon,
-  Psychology as PsychologyIcon
+  Speed as SpeedIcon,
+  AutoAwesome as AutoAwesomeIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import FileUpload from './FileUpload';
 
-export default function Summary({ token, onNavigate, onLogout }) {
+export default function TLDR({ token, onNavigate, onLogout }) {
   const theme = useTheme();
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -74,7 +73,7 @@ export default function Summary({ token, onNavigate, onLogout }) {
       }
       
       const simplifyData = await simplifyRes.json();
-      setResult(simplifyData);
+      setResult(simplifyData.summary);
       
       // Save to localStorage for reports
       const reports = JSON.parse(localStorage.getItem('demystify_reports') || '[]');
@@ -82,7 +81,7 @@ export default function Summary({ token, onNavigate, onLogout }) {
         summary: simplifyData.summary, 
         simplified: simplifyData.simplified || '', 
         ts: Date.now(),
-        type: 'Summary'
+        type: 'TLDR'
       });
       localStorage.setItem('demystify_reports', JSON.stringify(reports.slice(0, 20)));
       
@@ -93,7 +92,7 @@ export default function Summary({ token, onNavigate, onLogout }) {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', width: '100vw', backgroundColor: theme.palette.background.default }}>
+    <Box sx={{ minHeight: '100vh', width: '100vw', backgroundColor: theme.palette.background.default, pt: 0, mt: 0, paddingTop: '0 !important' }}>
       {/* Header */}
       <AppBar position="static" elevation={0} sx={{ borderRadius: 0 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -107,9 +106,9 @@ export default function Summary({ token, onNavigate, onLogout }) {
               <ArrowBackIcon />
             </IconButton>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <DocumentIcon sx={{ color: theme.palette.info.main }} />
+              <SpeedIcon sx={{ color: theme.palette.secondary.main }} />
               <Typography variant="h5" fontWeight={700} sx={{ letterSpacing: 1, color: '#fff' }}>
-                Plain Summary
+                TL;DR Generator
               </Typography>
             </Box>
           </Box>
@@ -122,44 +121,44 @@ export default function Summary({ token, onNavigate, onLogout }) {
       </AppBar>
 
       {/* Main Content */}
-      <Box sx={{ width: '100%', maxWidth: 900, mx: 'auto', p: { xs: 2, md: 4 } }}>
+      <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: { xs: 2, md: 4 } }}>
         <Paper elevation={2} sx={{ p: { xs: 3, md: 5 }, borderRadius: 4 }}>
           {/* Header Section */}
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Avatar sx={{ 
-              backgroundColor: `${theme.palette.info.main}20`, 
-              color: theme.palette.info.main,
+              backgroundColor: `${theme.palette.secondary.main}20`, 
+              color: theme.palette.secondary.main,
               width: 80,
               height: 80,
               mx: 'auto',
               mb: 3
             }}>
-              <SummarizeIcon sx={{ fontSize: 40 }} />
+              <AutoAwesomeIcon sx={{ fontSize: 40 }} />
             </Avatar>
             <Typography variant="h4" fontWeight={700} gutterBottom sx={{ color: theme.palette.primary.main }}>
-              Plain English Summary
+              Quick Summary Generator
             </Typography>
-            <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
-              Transform complex legal language into clear, understandable explanations that anyone can follow.
+            <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 500, mx: 'auto' }}>
+              Get instant, concise summaries of complex legal documents. Perfect when you need the key points quickly.
             </Typography>
           </Box>
 
           {/* Benefits */}
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 4, flexWrap: 'wrap' }}>
             <Chip 
-              icon={<PsychologyIcon />} 
-              label="Easy to Understand" 
+              icon={<SpeedIcon />} 
+              label="Instant Results" 
               color="primary" 
               variant="outlined" 
             />
             <Chip 
-              icon={<SummarizeIcon />} 
-              label="Comprehensive" 
-              color="info" 
+              icon={<AutoAwesomeIcon />} 
+              label="AI-Powered" 
+              color="secondary" 
               variant="outlined" 
             />
             <Chip 
-              label="Plain Language" 
+              label="Key Points Only" 
               color="success" 
               variant="outlined" 
             />
@@ -196,7 +195,7 @@ export default function Summary({ token, onNavigate, onLogout }) {
                     borderRadius: 3
                   }
                 }}
-                placeholder="Copy and paste your contract, agreement, or any legal document text here for a comprehensive summary..."
+                placeholder="Copy and paste your contract, agreement, or any legal document text here for a quick summary..."
               />
             )}
           </Box>
@@ -215,19 +214,20 @@ export default function Summary({ token, onNavigate, onLogout }) {
               fontWeight: 700,
               fontSize: '1.1rem',
               textTransform: 'none',
-              backgroundColor: theme.palette.info.main,
+              background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.secondary.dark} 100%)`,
+              color: 'black',
               '&:hover': {
-                backgroundColor: theme.palette.info.dark,
+                background: `linear-gradient(135deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.main} 100%)`,
               }
             }}
           >
             {loading ? (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <CircularProgress size={24} color="inherit" />
-                Creating Summary...
+                Generating TL;DR...
               </Box>
             ) : (
-              'Generate Plain Summary'
+              'Get Quick Summary'
             )}
           </Button>
 
@@ -244,102 +244,51 @@ export default function Summary({ token, onNavigate, onLogout }) {
 
           {/* Results Section */}
           {result && (
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="h5" fontWeight={700} sx={{ mb: 3, color: theme.palette.primary.main, textAlign: 'center' }}>
-                📄 Document Analysis Results
-              </Typography>
-              
-              <Grid container spacing={3}>
-                {/* Summary */}
-                {result.summary && (
-                  <Grid item xs={12} md={result.simplified ? 6 : 12}>
-                    <Card sx={{ height: '100%', borderRadius: 3, border: `2px solid ${theme.palette.info.main}20` }}>
-                      <CardContent sx={{ p: 4 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                          <SummarizeIcon sx={{ color: theme.palette.info.main, fontSize: 28 }} />
-                          <Typography variant="h6" fontWeight={700} sx={{ color: theme.palette.primary.main }}>
-                            📋 Key Summary
-                          </Typography>
-                        </Box>
-                        <Paper sx={{ 
-                          p: 3, 
-                          backgroundColor: theme.palette.grey[50], 
-                          borderRadius: 2,
-                          border: `1px solid ${theme.palette.grey[200]}`
-                        }}>
-                          <Typography 
-                            variant="body1" 
-                            sx={{ 
-                              lineHeight: 1.7,
-                              color: theme.palette.text.primary
-                            }}
-                          >
-                            {result.summary}
-                          </Typography>
-                        </Paper>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                )}
-
-                {/* Simplified Text */}
-                {result.simplified && (
-                  <Grid item xs={12} md={result.summary ? 6 : 12}>
-                    <Card sx={{ height: '100%', borderRadius: 3, border: `2px solid ${theme.palette.secondary.main}20` }}>
-                      <CardContent sx={{ p: 4 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                          <PsychologyIcon sx={{ color: theme.palette.secondary.main, fontSize: 28 }} />
-                          <Typography variant="h6" fontWeight={700} sx={{ color: theme.palette.primary.main }}>
-                            📝 Simplified Text
-                          </Typography>
-                        </Box>
-                        <Paper sx={{ 
-                          p: 3, 
-                          backgroundColor: theme.palette.grey[50], 
-                          borderRadius: 2,
-                          border: `1px solid ${theme.palette.grey[200]}`
-                        }}>
-                          <Typography 
-                            variant="body1" 
-                            sx={{ 
-                              lineHeight: 1.7,
-                              color: theme.palette.text.primary
-                            }}
-                          >
-                            {result.simplified}
-                          </Typography>
-                        </Paper>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                )}
-              </Grid>
-              
-              {/* Action Buttons */}
-              <Box sx={{ mt: 4, display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Button
-                  variant="outlined"
-                  onClick={() => onNavigate('tldr')}
-                  sx={{ borderRadius: 2 }}
-                >
-                  Get Quick TL;DR
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => onNavigate('analyzer')}
-                  sx={{ borderRadius: 2 }}
-                >
-                  Detailed Clause Analysis
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => onNavigate('reports')}
-                  sx={{ borderRadius: 2 }}
-                >
-                  View All Reports
-                </Button>
-              </Box>
-            </Box>
+            <Card sx={{ mt: 4, borderRadius: 3, border: `2px solid ${theme.palette.secondary.main}20` }}>
+              <CardContent sx={{ p: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+                  <AutoAwesomeIcon sx={{ color: theme.palette.secondary.main, fontSize: 28 }} />
+                  <Typography variant="h5" fontWeight={700} sx={{ color: theme.palette.primary.main }}>
+                    📝 TL;DR Summary
+                  </Typography>
+                </Box>
+                <Paper sx={{ 
+                  p: 3, 
+                  backgroundColor: theme.palette.grey[50], 
+                  borderRadius: 2,
+                  border: `1px solid ${theme.palette.grey[200]}`
+                }}>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      lineHeight: 1.7,
+                      color: theme.palette.text.primary,
+                      fontStyle: 'italic'
+                    }}
+                  >
+                    "{result}"
+                  </Typography>
+                </Paper>
+                
+                {/* Action Buttons */}
+                <Box sx={{ mt: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => onNavigate('analyzer')}
+                    sx={{ borderRadius: 2 }}
+                  >
+                    Get Detailed Analysis
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => onNavigate('summary')}
+                    sx={{ borderRadius: 2 }}
+                  >
+                    View Full Summary
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
           )}
         </Paper>
       </Box>

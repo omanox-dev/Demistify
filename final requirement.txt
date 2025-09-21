@@ -1,0 +1,46 @@
+# Final Requirement
+
+## What Has Been Implemented
+
+### Features
+- Upload or paste legal documents (text or file)
+- AI-powered simplification and summary (Google Gen AI integration ready)
+- User authentication (register/login) with JWT
+- User reports/history (localStorage MVP)
+- Modern, responsive UI (React + Material UI)
+- Static header, seamless navigation, error handling
+- CORS and HTTPS support for secure communication
+
+### System Requirements
+- Backend: FastAPI (Python)
+- Frontend: React + Material UI
+- AI Layer: Google Gen AI (Gemini) (API key required)
+- Authentication: JWT
+- Document Upload: FastAPI file upload
+- User Reports: LocalStorage (MVP)
+
+## What Needs to Be Implemented
+
+### Features
+- Clause-by-clause breakdown of legal documents
+- Risk detection and scoring (Low/Medium/High risk for clauses)
+- Actionable guidance and negotiation tips
+- Role-based personalization (Tenant, Borrower, Employee, etc.)
+- Multi-language support (English + Hindi, scalable to other languages)
+- Source citations and confidence scores for explanations
+- Privacy and safety features (secure data handling, AI disclaimers)
+- Interactive Q&A chatbot for clause-specific questions
+- Downloadable simplified report for users
+- Scalable user reports/history (database integration)
+
+### System Requirements
+- Document segmentation and clause extraction (PyPDF2, NLP)
+- Risk detection logic (AI/NLP)
+- Multi-language translation (Google Translate API, IndicNLP)
+- Database for user data and reports (MongoDB, Firestore, etc.)
+- Source citation and confidence scoring (AI logic)
+- Chatbot integration (AI/NLP)
+- Enhanced security and compliance (encryption, privacy)
+
+---
+This file summarizes the current implementation and the remaining requirements for the Demystify system.
